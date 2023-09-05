@@ -64,7 +64,6 @@ function GameBoard(player1, player2) {
     game_container.innerHTML = '';
     game_container.appendChild(game_board);
     const game_status = document.querySelector('.game-status');
-    const winners = ['123','456','789','147','258','369','159','357'];
     const plays_max = 9;
     
     function startGame() {
@@ -83,6 +82,7 @@ function GameBoard(player1, player2) {
             // Create game_cell
             const game_cell = document.createElement('div');
             game_cell.classList.add('game-cell');
+            game_cell.classList.add('cell-hover');
             game_cell.setAttribute('data-cell', i);
             game_board.appendChild(game_cell);
             // game_cell click
@@ -110,21 +110,17 @@ function GameBoard(player1, player2) {
         const cell_img = document.createElement('img');
         cell_img.setAttribute('src', currentPlayer.player_img);
         game_cell.appendChild(cell_img);
+        // Remove hover effect (cant select this cell again)
+        game_cell.classList.remove('cell-hover');
         // Add cell id to player position list
         const cell_id = game_cell.getAttribute('data-cell');
         currentPlayer.game_positions.push(cell_id);
         // Check for game winner
         const game_winner = checkGameStatus();
         if(game_winner) {
-            console.log(game_winner);
-            isGameOver = true;
-            button_start.classList.remove('hide');
-            game_status.textContent = currentPlayer.player_name + ' Wins!';
+            endGame(currentPlayer.player_name + ' Wins!');
         } else if(plays_count === plays_max) {
-            console.log('tie!');
-            isGameOver = true;
-            button_start.classList.remove('hide');
-            game_status.textContent = 'Tie Game!';
+            endGame('Tie Game!');
         } else {
             // Switch current player
             currentPlayer = currentPlayer === player1 ? player2 : player1;
@@ -134,25 +130,22 @@ function GameBoard(player1, player2) {
 
     function checkGameStatus() {
 
-        // Return player if winner, otherwise return nothing
-        if(currentPlayer.game_positions.length < 3) {
-            console.log('Not enough positions to test for win');
-            return;
-        }
-
-        // TODO - check if you can click while this is running
-        currentPlayer.game_positions.sort();    
-        for(let i = 0; i < (currentPlayer.game_positions.length - 2); i++) {
-            const position_string = currentPlayer.game_positions[i] + 
-            currentPlayer.game_positions[i + 1] +
-            currentPlayer.game_positions[i + 2];
-            console.log(currentPlayer.player_name + ' i=' + i);
-            console.log(position_string);
-            if(winners.includes(position_string)) {
+        const winners = ['123','456','789','147','258','369','159','357'];
+        for(let i = 0; i < winners.length; i++) {
+            const winner_split = winners[i].split('');
+            const isWinner = winner_split.every(el => currentPlayer.game_positions.includes(el));
+            if(isWinner) {
                 return currentPlayer;
             }
         }
-        return;
+
+    }
+
+    function endGame(status_message) {
+        isGameOver = true;
+        game_cells.forEach(el => el.classList.remove('cell-hover'));
+        button_start.classList.remove('hide');
+        game_status.textContent = status_message;
     }
 
     return {

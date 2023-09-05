@@ -135,7 +135,7 @@ body {
     height: 75%;
 }
 
-.game-cell:hover {
+.cell-hover:hover {
     border: solid white 5px;
 }
 
