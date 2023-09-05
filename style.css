@@ -1,0 +1,144 @@
+:root {
+    --color-light: #e9ecef;
+    --color-mid: #ced4da;
+    --color-dark: black;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url('/img/346464.jpg');
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: solid var(--color-dark) 5px;
+    border-radius: 30px;
+    background-color: rgb(0,0,0,0.4);
+    align-content: start;
+    justify-items: center;
+    margin: 5vh 10vw;
+    width: fit-content;
+    padding: 0 5vw;
+}
+
+.container > h1 {
+    font-size: 40px;
+    color: var(--color-light);
+}
+
+.game-board {
+    border: solid var(--color-dark) 3px;
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 191px);
+    justify-content: center;
+}
+
+.player-board {
+    border: solid black 4px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, 300px);
+    grid-template-rows: 150px 450px;
+    color: white;
+}
+
+.player-board > h1 {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    font-size: 45px;
+}
+
+.player-board h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.player-id {
+    align-self: end;
+}
+
+.player-selection {
+    border: solid black 1px;
+    border-top: solid black 4px;
+    display: grid;
+    grid-template-rows: 50px 300px 50px;
+    align-content: center;
+    justify-items: center;
+    grid-row: 2;
+}
+
+.player-selection-one {
+    grid-column: 1;
+    border-right: solid black 2px;
+}
+
+.player-selection-two {
+    grid-column: 2;
+    border-left: solid black 2px;
+}
+
+.player-grid {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-content: center;
+    border: solid black 2px;   
+    align-self: center;
+}
+
+.player-grid > img {
+    background-color: lightgray;
+    border: solid black 2px;
+    height: 100px;
+    width: 100px;
+}
+
+.player-grid > img:hover {
+    border: solid lightgoldenrodyellow 10px;
+    margin: -10px;
+    z-index: 1;
+}
+
+.game-status {
+    color: white;
+}
+
+.button-bar {
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+
+.button-bar > button {
+    font-size: 20px;
+    padding: 10px 30px;
+}
+
+.game-cell {
+    border: solid var(--color-dark) 3px;
+    background-image: url('/img/yellow-comic.jpg');
+    background-position: center;
+    background-size: cover;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.game-cell > img {
+    width: 75%;
+    height: 75%;
+}
+
+.game-cell:hover {
+    border: solid white 5px;
+}
+
+.hide {
+    visibility: hidden;
+}
