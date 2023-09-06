@@ -2,6 +2,43 @@ let player1;
 let player2;
 let game;
 
+// Character type selection
+const character_select = document.querySelector('#character-select');
+character_select.addEventListener('change', function(el) {
+    // Reset any input/selection
+    const player_name = document.querySelectorAll('.player-name');
+    player_name.forEach(el => el.textContent = '');
+    const button_start = document.querySelector('.game-start');
+    button_start.classList.add('hide');
+    // change images
+    console.log(this.value);
+    const player_grid = document.querySelectorAll('.player-grid');
+    if(this.value === 'heros') {
+        player_grid[0].innerHTML = `
+        <img src="./img/captain_america.png" alt="">
+        <img src="./img/black_panther.png" alt="">
+        <img src="./img/hulk.png" alt="">
+        <img src="./img/black_widow.png" alt="">`
+        player_grid[1].innerHTML = `
+        <img src="./img/spiderman.png" alt="">
+        <img src="./img/she_hulk.png" alt="">
+        <img src="./img/groot.png" alt="">
+        <img src="./img/ironman.png" alt="">`
+    } else {
+        player_grid[0].innerHTML = `
+        <img src="./img/hedgehog.png" alt="">
+        <img src="./img/llama.png" alt="">
+        <img src="./img/dinosaur.png" alt="">
+        <img src="./img/octopus.png" alt="">`
+        player_grid[1].innerHTML = `
+        <img src="./img/raccoon.png" alt="">
+        <img src="./img/tiger.png" alt="">
+        <img src="./img/giraffe.png" alt="">
+        <img src="./img/chick.png" alt="">`
+    }
+    addPlayerSelectionAction();
+})
+
 // Game start/reset button
 const button_start = document.querySelector('.game-start');
 button_start.addEventListener('click', function() {
@@ -12,45 +49,50 @@ button_start.addEventListener('click', function() {
         player2 = new Player(players[1].textContent, players[1].getAttribute('data-img-src'));
         game = new GameBoard(player1, player2);
         // From now on, this button will just restart the game
-        this.textContent = 'Restart Game';
+        this.textContent = 'Restart Game';     
     }
     game.startGame();
 })
 
-const player_select_img = document.querySelectorAll('.player-grid > img');
-player_select_img.forEach(function(el) {
-    el.addEventListener('click', function() {
-        // Parse image name into display name (underscore=space, upper-case first letter)
-        const player_selection = this.closest('.player-selection');
-        const player_name = player_selection.querySelector('.player-name');
-        let img_name = this.getAttribute('src');
-        player_name.setAttribute('data-img-src', img_name);
-        img_name = img_name.replace('/img/','').replace('.png','').replace('_', ' ');
-        img_name_split = img_name.split(' ');
-        img_name = null;
-        img_name_split.forEach(function(s) {
-            s = s.substr(0, 1).toUpperCase() + s.substr(1).toLowerCase();
-            if(img_name) {
-                img_name += ' ' + s;
-            } else {
-                img_name = s;
+function addPlayerSelectionAction() {
+    const player_select_img = document.querySelectorAll('.player-grid > img');
+    player_select_img.forEach(function(el) {
+        el.addEventListener('click', function() {
+            // closests means "look up for this element"
+            // Parse image name into display name (underscore=space, upper-case first letter)
+            const player_selection = this.closest('.player-selection');
+            const player_name = player_selection.querySelector('.player-name');
+            let img_name = this.getAttribute('src');
+            player_name.setAttribute('data-img-src', img_name);
+            img_name = img_name.replace('./img/','').replace('.png','').replace('_', ' ');
+            img_name_split = img_name.split(' ');
+            img_name = null;
+            img_name_split.forEach(function(s) {
+                s = s.substr(0, 1).toUpperCase() + s.substr(1).toLowerCase();
+                if(img_name) {
+                    img_name += ' ' + s;
+                } else {
+                    img_name = s;
+                }
+            });
+            player_name.textContent = img_name;
+            // Check to enable start game - have both players selected
+            const player_names = document.querySelectorAll('.player-name');
+            let count = 0;
+            player_names.forEach(function(el) {
+                if(el.textContent.length > 0) {
+                    count++
+                }
+            });
+            if(count === 2) {
+                button_start.textContent = 'Start Game';
+                button_start.classList.remove('hide');
             }
-        });
-        player_name.textContent = img_name;
-        // Check to enable start game - have both players selected
-        const player_names = document.querySelectorAll('.player-name');
-        let count = 0;
-        player_names.forEach(function(el) {
-            if(el.textContent.length > 0) {
-                count++
-            }
-        });
-        if(count === 2) {
-            button_start.textContent = 'Start Game';
-            button_start.classList.remove('hide');
-        }
+        })
     })
-})
+}
+addPlayerSelectionAction();
+
 
 // Game functionality
 function GameBoard(player1, player2) {
